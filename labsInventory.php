@@ -114,7 +114,9 @@ class labsInventory extends frontControllerApplication
 	protected function main ()
 	{
 		# Start a cookie session
-		session_start ();
+		if (!session_id ()) {	// If not already started, e.g. in an embedded context
+			session_start ();
+		}
 		
 		# Set the image directory
 		$this->settings['imageDirectory'] = $this->baseUrl . $this->settings['imageDirectory'];
