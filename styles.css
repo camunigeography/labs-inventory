@@ -1,0 +1,21 @@
+
+#labsinventory div.jumplist {float: right; margin-left: 40px;}
+#labsinventory div.thumbnail {border: 2px solid #eee; color: gray; font-style: italic; font-size: 0.83em; width: 80px; height: 50px; text-align: center; padding: 10px;}
+#labsinventory table.equipmentlist td p.name {margin-top: 0;}
+#labsinventory div.bookingform table td.title {width: 250px;}
+#labsinventory .article {margin-top: 40px;}	/* Ensures the buttons are not covered up */
+#labsinventory ul.actions li.addtocart form input {background: url(/images/icons/add.png) 8px center no-repeat; color: #900; padding-left: 25px;}
+#labsinventory ul.actions li.viewbasket {background: url(/images/icons/basket.png) 8px center no-repeat; color: #900;}
+#labsinventory ul.actions li.addtocart form:hover {background-color: #f7f7f7;}
+#labsinventory ul.actions.checkout {margin-left: 25px; margin-bottom: 25px;}
+#labsinventory ul.actions.checkout li a#proceedtocheckout {background-color: #ffcccc;}
+#labsinventory table.basket {margin-top: 20px; margin-bottom: 20px;}
+#labsinventory table.basket th {font-weight: normal; font-size: 0.83em; line-height: 1.2em; background-color: #f9f9f9; border-bottom: 2px solid #ccc; padding-bottom: 5px;}
+#labsinventory table.basket td.item {font-weight: bold;}
+#labsinventory table.basket.editable td.price {width: 7em;}
+#labsinventory form input.highlight {background-color: yellow; color: black;}
+#labsinventory fieldset {width: 300px; border: 1px solid #ddd;}
+#labsinventory h3.expand {margin-top: 1em; margin-bottom: 0;}
+#labsinventory p.messagethisgroup {margin-top: 0; margin-bottom: 0;}
+#labsinventory table.orderstatus {margin-top: 0; margin-bottom: 2em;}
+#labsinventory table.orderstatus td.name {width: 170px;}

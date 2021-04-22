@@ -1,0 +1,36 @@
+# Application Apache directives
+
+# Load using:
+#	# Labs inventory system
+#	Include /path/to/labs-inventory/.httpd.conf.extract.txt
+#	Use MacroLabsInventory /path/to/labs-inventory "/path/to/site/:/path/to/labs-inventory/:/path/to/php/libraries/"
+
+
+<Macro MacroLabsInventory $baseUrl $includePath>
+	
+	# Include path
+	<Location $baseUrl>
+		php_value include_path "$includePath"
+	</Location>
+	
+	# Front controller application support
+	Use MacroFrontControllerApplication "$baseUrl/" "Equipment inventory"
+	
+	# Application routing
+	RewriteRule ^$baseUrl/(equipment|search|orders|external)/$ $baseUrl/index.html?action=$1 [L]
+	RedirectMatch Permanent ^$baseUrl/(equipment|search|orders|external)$ $baseUrl/$1/
+	RewriteRule ^$baseUrl/(equipment)/([a-z]+).html$ $baseUrl/index.html?action=$1&item=$2 [L]
+	RewriteRule ^$baseUrl/(search)/(.+) $baseUrl/index.html?action=$1&item=$2 [L]
+	RewriteRule ^$baseUrl/equipment/([0-9]+)/$ $baseUrl/index.html?action=article&item=$1 [L]
+	RedirectMatch Permanent ^$baseUrl/equipment/([0-9]+)$ $baseUrl/equipment/$1/
+	RewriteRule ^$baseUrl/equipment/([0-9]+)/book.html$ $baseUrl/index.html?action=book&item=$1 [L]
+	RewriteRule ^$baseUrl/orders/([1-9])([0-9]*)/$ $baseUrl/index.html?action=orders&item=$1$2 [L]
+	RedirectMatch Permanent ^$baseUrl/orders/([1-9])([0-9]*)$ $baseUrl/orders/$1$2/
+	RewriteRule ^$baseUrl/orders/([1-9])([0-9]*)/confirmation.html$ $baseUrl/index.html?action=orders&mode=confirmation&item=$1$2 [L]
+	RewriteRule ^$baseUrl/message/(unfinalised|finalised|shipped|returned|ignore).html$ $baseUrl/index.html?action=message&item=$1 [L,QSA]
+	
+	# Shopping cart
+	RewriteRule ^$baseUrl/(basket|checkout)/$ $baseUrl/index.html?action=$1 [L]
+	RewriteRule ^$baseUrl/(basket|checkout)$ $baseUrl/$1/ [L,R]
+	
+</Macro>

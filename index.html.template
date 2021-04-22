@@ -1,0 +1,25 @@
+<?php
+
+# Settings
+$settings = array (
+	'hostname' => 'localhost',
+	'username' => 'my_username',
+	'password' => 'my_password',
+	'recipient' => 'labs@example.com',
+	'labManagerNames' => 'Jane Patel and Jordan Smith',
+	'userCallback' => 'getUser',
+);
+
+# Function to get details of a user
+function getUser ($userId)
+{
+	# Look up the user's status
+	// ...
+	return $userData;
+}
+
+# Load and run the application with the above settings
+require_once ('labsInventory.php');
+new labsInventory ($settings);
+
+?>
