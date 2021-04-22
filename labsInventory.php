@@ -24,6 +24,8 @@ class labsInventory extends frontControllerApplication
 			'labManagerNames'		=> NULL,
 			'userCallback'			=> NULL,
 			'introductoryText'		=> false,
+			'tabUlClass'			=> 'tabsflat',
+			
 		);
 		
 		# Return the defaults
