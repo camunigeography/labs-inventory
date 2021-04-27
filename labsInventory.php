@@ -9,7 +9,7 @@ class labsInventory extends frontControllerApplication
 	{
 		# Specify available arguments as defaults or as NULL (to represent a required argument)
 		$defaults = array (
-			'database'				=> 'labs',
+			'database'				=> 'labsinventory',
 			'table'					=> 'equipment',
 			'administrators'		=> 'administrators',
 			'imageGenerationStub'	=> '/images/generator',			# Location of the image generation script, from web root
