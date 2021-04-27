@@ -5,8 +5,6 @@ $settings = array (
 	'hostname' => 'localhost',
 	'username' => 'my_username',
 	'password' => 'my_password',
-	'recipient' => 'labs@example.com',
-	'labManagerNames' => 'Jane Patel and Jordan Smith',
 	'userCallback' => 'getUser',
 );
 

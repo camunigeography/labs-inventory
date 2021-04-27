@@ -19,11 +19,7 @@ class labsInventory extends frontControllerApplication
 			'page404'				=> 'sitetech/404.html',			# Location of 404 page
 			'authentication'		=> true,
 			'div'					=> 'labsinventory',
-			#!# Ideally the administrators page would have tickboxes for who receives the e-mails, instead of setting recipient externally
-			'recipient'				=> NULL,
-			'labManagerNames'		=> NULL,
 			'userCallback'			=> NULL,
-			'introductoryText'		=> false,
 			'tabUlClass'			=> 'tabsflat',
 			
 		);
@@ -172,6 +168,14 @@ class labsInventory extends frontControllerApplication
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Table of projects (e.g. selection for particular courses)';
 			
+			CREATE TABLE `settings` (
+			  `id` int NOT NULL COMMENT 'Automatic key (ignored)',
+			  `applicationName` varchar(255) NOT NULL DEFAULT 'Labs inventory' COMMENT 'Application name',
+			  `recipientEmail` varchar(255) NOT NULL COMMENT 'Recipient e-mail',
+			  `labManagerNames` varchar(255) NOT NULL COMMENT 'Lab manager names',
+			  `introductoryText` text NOT NULL COMMENT 'Introductory text'
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Settings';
+			
 			CREATE TABLE `shoppingcart` (
 			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique key',
 			  `session` varchar(255) NOT NULL COMMENT 'User session number',
@@ -285,7 +289,7 @@ class labsInventory extends frontControllerApplication
 	{
 		# Use the standard page but add on a message
 		#!# Need to energineer out this manual requirement
-		echo "\n<div class=\"box\">\n\t<p class=\"warning\"><strong>Important: if adding/removing administrators, make sure you contact the Webmaster so that the " . htmlspecialchars ($this->settings['recipient']) . " e-mail address is manually updated.</strong></p>\n</div>";
+		echo "\n<div class=\"box\">\n\t<p class=\"warning\"><strong>Important: if adding/removing administrators, make sure you contact the Webmaster so that the " . htmlspecialchars ($this->settings['recipientEmail']) . " e-mail address is manually updated.</strong></p>\n</div>";
 		echo parent::administrators ();
 	}
 	
@@ -909,14 +913,14 @@ Signature of staff ({$this->settings['labManagerNames']})
 		}
 		
 		# Prepare message parameters
-		$to = ($outcomeMode ? "{$result['name']} <{$result['email']}>" : $this->settings['recipient']);
-		$replyTo = ($outcomeMode ? $this->settings['recipient'] : "{$result['name']} <{$result['email']}>");
+		$to = ($outcomeMode ? "{$result['name']} <{$result['email']}>" : $this->settings['recipientEmail']);
+		$replyTo = ($outcomeMode ? $this->settings['recipientEmail'] : "{$result['name']} <{$result['email']}>");
 		$subject = strip_tags ($this->settings['h1']) . ": {$subject} ({$result['name']})";
 		$message = wordwrap ($message);
 		$from = "Webmaster <{$this->settings['webmaster']}>";
 		$extraHeaders  = "From: {$from}";
 		if ($outcomeMode) {
-			$extraHeaders .= "\r\nCc: {$this->settings['recipient']}";
+			$extraHeaders .= "\r\nCc: {$this->settings['recipientEmail']}";
 		}
 		$extraHeaders .= "\r\nReply-To: {$replyTo}";
 		
