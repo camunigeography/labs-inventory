@@ -97,6 +97,126 @@ class labsInventory extends frontControllerApplication
 	}
 	
 	
+	# Database structure definition
+	public function databaseStructure ()
+	{
+		return "
+			CREATE TABLE `administrators` (
+			  `crsid` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+			  `active` enum('Y','N') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
+			  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+			  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+			  `state` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Headings expanded',
+			  PRIMARY KEY (`crsid`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Administrators';
+			
+			CREATE TABLE `equipment` (
+			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Inventory no.',
+			  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Name',
+			  `model` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Model',
+			  `type__JOIN__labs__equipmentType__reserved` int NOT NULL,
+			  `manufacturer` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Manufacturer',
+			  `quantity` int NOT NULL COMMENT 'Quantity held',
+			  `stockAvailable` int DEFAULT NULL COMMENT 'Stock available (0=no)',
+			  `location__JOIN__labs__locations__reserved` int DEFAULT NULL,
+			  `serialNumber` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Serial number',
+			  `notesPublic` text CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT 'Technical notes and specifications',
+			  `dateAcquired` date DEFAULT NULL COMMENT 'Date acquired',
+			  `replacementValue` float(8,2) DEFAULT NULL COMMENT 'Replacement value',
+			  `orderNumber` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Order number',
+			  `supplier` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Supplier',
+			  `photograph` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Photograph',
+			  `internalNotes` text CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT 'Internal notes',
+			  `urlTechniques` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Link to relevant techniques and protocols page',
+			  `urlHealthAndSafetyInfo` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Link to relevant health and safety page',
+			  `visibleOnline` enum('Y','N','Unknown') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y' COMMENT 'Visible online?',
+			  `loanable` enum('No','Yes','Yes - staff/graduates only','Yes - staff only','Unknown') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'No' COMMENT 'Loanable?',
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+			
+			CREATE TABLE `equipmentGroups` (
+			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique key',
+			  `group` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Group',
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Table of equipment groups';
+			
+			CREATE TABLE `equipmentType` (
+			  `id` int NOT NULL AUTO_INCREMENT,
+			  `equipmentType` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Equipment type',
+			  `urlSlug` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'URL slug',
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+			
+			CREATE TABLE `equipmentTypes` (
+			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique key',
+			  `group__JOIN__labs__equipmentGroups__reserved` int NOT NULL COMMENT 'Group',
+			  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Type',
+			  `area` enum('','Field','Lab','Both') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Area',
+			  `notes` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Notes',
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Table of equipment types';
+			
+			CREATE TABLE `locations` (
+			  `id` int NOT NULL AUTO_INCREMENT,
+			  `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+			
+			CREATE TABLE `projects` (
+			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Automatic key',
+			  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Title of project',
+			  `items` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Item numbers',
+			  `notes` text CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT 'Notes',
+			  `startDate` date DEFAULT NULL COMMENT 'Start date (date this set becomes visible)',
+			  `endDate` date DEFAULT NULL COMMENT 'End date',
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Table of projects (e.g. selection for particular courses)';
+			
+			CREATE TABLE `shoppingcart` (
+			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique key',
+			  `session` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'User session number',
+			  `provider` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Shop product provider',
+			  `item` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Item number',
+			  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Automatic timestamp',
+			  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'URL of item',
+			  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Name of item',
+			  `image` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Image of item',
+			  `price` float(8,2) NOT NULL COMMENT 'Price each',
+			  `vat` enum('Y','N') CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Price includes VAT?',
+			  `total` int NOT NULL COMMENT 'Number of items required',
+			  `maximumAvailable` int NOT NULL COMMENT 'Maxmimum number of items of this type available',
+			  `orderId` int DEFAULT NULL COMMENT 'Order number',
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Shopping cart session information (do not edit)';
+			
+			CREATE TABLE `shoppingcartOrders` (
+			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Order no.',
+			  `collectionDetails` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Collection details',
+			  `comments` text CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT 'Any other comments',
+			  `sundries` text CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT 'Sundries (if any)',
+			  `startDate` date NOT NULL COMMENT 'Start date',
+			  `endDate` date NOT NULL COMMENT 'End date',
+			  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Username',
+			  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Name',
+			  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'E-mail address',
+			  `telephone` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Telephone',
+			  `staffTypeId` int NOT NULL COMMENT 'Status',
+			  `confirmation` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+			  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			  `status` enum('unfinalised','finalised','shipped','returned','lost','ignore') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Status of order',
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Shopping cart inquiry form';
+			
+			CREATE TABLE `sundries` (
+			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Automatic key',
+			  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Name of sundry item',
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Table of sundries';
+		";
+	}
+	
+	
+	
 	# Status labels, in order that they should be listed on the review screen
 	# IMPORTANT: If changing this, the database structure ENUM must also be updated in shoppingcartOrders.status
 	private $statusLabels = array (
