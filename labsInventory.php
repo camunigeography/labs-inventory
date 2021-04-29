@@ -1096,7 +1096,7 @@ Signature of staff ({$this->settings['labManagerNames']})
 		# Define the properties, by table
 		$dataBindingAttributes = array (
 			'equipment' => array (
-				'photograph' => array ('directory' => $_SERVER['DOCUMENT_ROOT'] . $this->baseUrl . '/images/', 'forcedFileName' => '%id', 'lowercaseExtension' => true, 'allowedExtensions' => array ('jpg')),
+				'photograph' => array ('directory' => $_SERVER['DOCUMENT_ROOT'] . $this->baseUrl . '/images/', 'previewLocationPrefix' => $this->baseUrl . '/images/', 'forcedFileName' => '%id', 'lowercaseExtension' => true, 'allowedExtensions' => array ('jpg')),
 			),
 		);
 		
