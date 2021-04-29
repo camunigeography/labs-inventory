@@ -29,6 +29,9 @@
 	RewriteRule ^$baseUrl/orders/([1-9])([0-9]*)/confirmation.html$ $baseUrl/index.html?action=orders&mode=confirmation&item=$1$2 [L]
 	RewriteRule ^$baseUrl/message/(unfinalised|finalised|shipped|returned|ignore).html$ $baseUrl/index.html?action=message&item=$1 [L,QSA]
 	
+	# Editing
+	Use MacroSinenomineEmbeddedWholeDb "$baseUrl" "/data" "editing"
+	
 	# Shopping cart
 	RewriteRule ^$baseUrl/(basket|checkout)/$ $baseUrl/index.html?action=$1 [L]
 	RewriteRule ^$baseUrl/(basket|checkout)$ $baseUrl/$1/ [L,R]

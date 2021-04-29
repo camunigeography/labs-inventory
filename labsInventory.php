@@ -21,7 +21,7 @@ class labsInventory extends frontControllerApplication
 			'div'					=> 'labsinventory',
 			'userCallback'			=> NULL,
 			'tabUlClass'			=> 'tabsflat',
-			
+			'useEditing'			=> true,
 		);
 		
 		# Return the defaults
@@ -373,14 +373,22 @@ class labsInventory extends frontControllerApplication
 	# Function to create an equipment types list
 	private function equipmentTypesList ($equipmentTypes)
 	{
+		# Start the HTML
+		$html = '';
+		
 		# Create a list
 		$list = array ();
 		foreach ($equipmentTypes as $urlSlug => $equipment) {
 			$list[$urlSlug] = "<a href=\"{$this->baseUrl}/equipment/{$urlSlug}.html\"><strong>" . htmlspecialchars ($equipment['equipmentType']) . "</strong></a> (total: {$equipment['total']})";
 		}
 		
-		# Compile the HTML
-		$html  = "\n<p>Please firstly select the type of equipment:</p>";
+		# Add admin link
+		if ($this->userIsAdministrator) {
+			$html .= "\n<p class=\"right\"><a class=\"actions right\" href=\"{$this->baseUrl}/data/equipment/\"><img src=\"/images/icons/pencil.png\" class=\"icon\" /> Edit equipment data</a></p>";
+		}
+		
+		# Selection list
+		$html .= "\n<p>Please firstly select the type of equipment:</p>";
 		$html .= application::htmlUl ($list, 0, 'spaced');
 		
 		# Return the HTML
@@ -1047,6 +1055,61 @@ Signature of staff ({$this->settings['labManagerNames']})
 				<li><a href="loanform.docx">Loan Application Form</a></li>
 				<li><a href="loanform.pdf">Loan Application Form</a></li>
 			</ul>';
+	}
+	
+	
+	# Admin editing section, substantially delegated to the sinenomine editing component
+	public function editing ($attributes = array (), $deny = false, $sinenomineExtraSettings = array ())
+	{
+		# Define sinenomine settings
+		$sinenomineExtraSettings = array (
+			'int1ToCheckbox' => true,
+			'datePicker' => true,
+			'richtextEditorToolbarSet' => 'BasicLonger',
+			'richtextWidth' => 600,
+			'richtextHeight' => 200,
+			'hideTableIntroduction' => false,
+			'tableCommentsInSelectionListOnly' => true,
+			'fieldFiltering' => false,
+		);
+		
+		# Define table attributes
+		$attributesByTable = $this->formDataBindingAttributes ();
+		$attributes = array ();
+		foreach ($attributesByTable as $table => $attributesForTable) {
+			foreach ($attributesForTable as $field => $fieldAttributes) {
+				$attributes[] = array ($this->settings['database'], $table, $field, $fieldAttributes);
+			}
+		}
+		
+		# Define tables to deny editing for
+		$deny[$this->settings['database']] = array (
+			'administrators',
+			'settings',
+			'shoppingcart',
+			'shoppingcartOrders',
+		);
+		
+		# Delegate to the default editor, which will echo the HTML
+		parent::editing ($attributes, $deny, $sinenomineExtraSettings);
+	}
+	
+	
+	# Helper function to define the dataBinding attributes
+	private function formDataBindingAttributes ()
+	{
+		# Define the properties, by table
+		$dataBindingAttributes = array (
+			'*' => array (
+				'photograph' => array ('directory' => $_SERVER['DOCUMENT_ROOT'] . $this->settings['imageStoreRoot'] . "/%table/", 'forcedFileName' => '%id', 'lowercaseExtension' => true, 'allowedExtensions' => array ('jpg')),
+				'pricePerUnit' => array ('prepend' => '&pound; ', ),
+				'priceIncludesVat' => array ('title' => 'VAT included', 'values' => array ('Y' => 'Yes, standard-rated included in price above', 'N' => 'No - zero-rated')),
+				'colour' => array ('type' => 'select', ),
+			),
+		);
+		
+		# Return the properties
+		return $dataBindingAttributes;
 	}
 }
 

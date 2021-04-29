@@ -30,6 +30,7 @@ Dependencies
 * [image.php image manipulation library](https://download.geog.cam.ac.uk/projects/image/)
 * [pureContent.php general environment library](https://download.geog.cam.ac.uk/projects/purecontent/)
 * shoppingCart.php shopping cart integration
+* sinenomine.php sineNomine database editor
 * [FamFamFam Silk Icons set](http://www.famfamfam.com/lab/icons/silk/)
 
 
