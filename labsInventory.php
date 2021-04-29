@@ -143,15 +143,6 @@ class labsInventory extends frontControllerApplication
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Equipment type';
 			
-			CREATE TABLE `equipmentTypes` (
-			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique key',
-			  `equipmentGroupId` int NOT NULL COMMENT 'Group',
-			  `type` varchar(255) NOT NULL COMMENT 'Type',
-			  `area` enum('','Field','Lab','Both') NOT NULL COMMENT 'Area',
-			  `notes` text NOT NULL COMMENT 'Notes',
-			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Equipment types';
-			
 			CREATE TABLE `locations` (
 			  `id` int NOT NULL AUTO_INCREMENT,
 			  `location` varchar(255) NOT NULL,
