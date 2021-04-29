@@ -158,16 +158,6 @@ class labsInventory extends frontControllerApplication
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Locations';
 			
-			CREATE TABLE `projects` (
-			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Automatic key',
-			  `title` varchar(255) NOT NULL COMMENT 'Title of project',
-			  `items` text NOT NULL COMMENT 'Item numbers',
-			  `notes` text COMMENT 'Notes',
-			  `startDate` date DEFAULT NULL COMMENT 'Start date (date this set becomes visible)',
-			  `endDate` date DEFAULT NULL COMMENT 'End date',
-			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Projects (e.g. selection for particular courses)';
-			
 			CREATE TABLE `settings` (
 			  `id` int NOT NULL COMMENT 'Automatic key (ignored)',
 			  `applicationName` varchar(255) NOT NULL DEFAULT 'Labs inventory' COMMENT 'Application name',
