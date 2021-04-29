@@ -269,7 +269,7 @@ class labsInventory extends frontControllerApplication
 	public function administrators ($null = NULL, $boxClass = 'graybox', $showFields = array ('active' => 'Active?', 'email' => 'E-mail', 'privilege' => 'privilege', 'name' => 'name', 'forename' => 'forename', 'surname' => 'surname', ))
 	{
 		# Use the standard page but add on a message
-		#!# Need to energineer out this manual requirement
+		#!# Replace recipientEmail setting with setting for each admin user for whether they should get e-mail, to avoid an alias getting out of sync
 		echo "\n<div class=\"box\">\n\t<p class=\"warning\"><strong>Important: if adding/removing administrators, make sure you contact the Webmaster so that the " . htmlspecialchars ($this->settings['recipientEmail']) . " e-mail address is manually updated.</strong></p>\n</div>";
 		echo parent::administrators ();
 	}
