@@ -635,6 +635,9 @@ class labsInventory extends frontControllerApplication
 		# Continue with the record
 		$html .= "\n" . '<h2>' . str_replace ('%detail', htmlspecialchars ($data['name']), $this->actions[$this->action]['description']) . "</h2>";
 		$html .= "\n" . '<div class="article">';
+		if ($this->userIsAdministrator) {
+			$html .= "\n<p class=\"right\"><a class=\"actions right\" href=\"{$this->baseUrl}/data/equipment/{$data['id']}/edit.html\"><img src=\"/images/icons/pencil.png\" class=\"icon\" /> Edit equipment details</a></p>";
+		}
 		$html .= "\n" . application::htmlTableKeyed ($data, $headings, false /*'<em class="comment">(Unknown)</em>' */, 'lines regulated', $allowHtml = true);
 		$html .= "\n" . '</div>';
 		
