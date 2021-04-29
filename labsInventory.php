@@ -1095,11 +1095,8 @@ Signature of staff ({$this->settings['labManagerNames']})
 	{
 		# Define the properties, by table
 		$dataBindingAttributes = array (
-			'*' => array (
-				'photograph' => array ('directory' => $_SERVER['DOCUMENT_ROOT'] . $this->settings['imageStoreRoot'] . "/%table/", 'forcedFileName' => '%id', 'lowercaseExtension' => true, 'allowedExtensions' => array ('jpg')),
-				'pricePerUnit' => array ('prepend' => '&pound; ', ),
-				'priceIncludesVat' => array ('title' => 'VAT included', 'values' => array ('Y' => 'Yes, standard-rated included in price above', 'N' => 'No - zero-rated')),
-				'colour' => array ('type' => 'select', ),
+			'equipment' => array (
+				'photograph' => array ('directory' => $_SERVER['DOCUMENT_ROOT'] . $this->baseUrl . '/images/', 'forcedFileName' => '%id', 'lowercaseExtension' => true, 'allowedExtensions' => array ('jpg')),
 			),
 		);
 		
