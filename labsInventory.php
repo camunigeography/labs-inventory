@@ -110,11 +110,11 @@ class labsInventory extends frontControllerApplication
 			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Inventory no.',
 			  `name` varchar(255) NOT NULL COMMENT 'Name',
 			  `model` varchar(255) NOT NULL COMMENT 'Model',
-			  `type__JOIN__labs__equipmentType__reserved` int NOT NULL,
+			  `type__JOIN__{$this->settings['database']}__equipmentType__reserved` int NOT NULL,
 			  `manufacturer` varchar(255) NOT NULL COMMENT 'Manufacturer',
 			  `quantity` int NOT NULL COMMENT 'Quantity held',
 			  `stockAvailable` int DEFAULT NULL COMMENT 'Stock available (0=no)',
-			  `location__JOIN__labs__locations__reserved` int DEFAULT NULL,
+			  `location__JOIN__{$this->settings['database']}__locations__reserved` int DEFAULT NULL,
 			  `serialNumber` text NOT NULL COMMENT 'Serial number',
 			  `notesPublic` text COMMENT 'Technical notes and specifications',
 			  `dateAcquired` date DEFAULT NULL COMMENT 'Date acquired',
@@ -145,7 +145,7 @@ class labsInventory extends frontControllerApplication
 			
 			CREATE TABLE `equipmentTypes` (
 			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique key',
-			  `group__JOIN__labs__equipmentGroups__reserved` int NOT NULL COMMENT 'Group',
+			  `group__JOIN__{$this->settings['database']}__equipmentGroups__reserved` int NOT NULL COMMENT 'Group',
 			  `type` varchar(255) NOT NULL COMMENT 'Type',
 			  `area` enum('','Field','Lab','Both') NOT NULL COMMENT 'Area',
 			  `notes` text NOT NULL COMMENT 'Notes',
@@ -490,8 +490,8 @@ class labsInventory extends frontControllerApplication
 			equipmentType.urlSlug,
 			locations.location
 		FROM equipment
-		LEFT JOIN equipmentType ON type__JOIN__labs__equipmentType__reserved = equipmentType.id
-		LEFT JOIN locations ON location__JOIN__labs__locations__reserved = locations.id
+		LEFT JOIN equipmentType ON type__JOIN__{$this->settings['database']}__equipmentType__reserved = equipmentType.id
+		LEFT JOIN locations ON location__JOIN__{$this->settings['database']}__locations__reserved = locations.id
 		WHERE
 			visibleOnline = 'Y'"
 			. ($equipmentTypeUrlSlug ? " AND urlSlug = " . $this->databaseConnection->quote ($equipmentTypeUrlSlug) : '')
@@ -499,11 +499,11 @@ class labsInventory extends frontControllerApplication
 			. $restrictionSql
 		 . "ORDER BY name,manufacturer,id;";
 		$function = ($equipmentId ? 'getOne' : 'getData');
-		if (!$data = $this->databaseConnection->$function ($query, 'labs.equipment')) {return false;}
+		if (!$data = $this->databaseConnection->$function ($query, "{$this->settings['database']}.equipment")) {return false;}
 		
 		# Remove specific fields
-		unset ($data['type__JOIN__labs__equipmentType__reserved']);
-		unset ($data['location__JOIN__labs__locations__reserved']);
+		unset ($data["type__JOIN__{$this->settings['database']}__equipmentType__reserved"]);
+		unset ($data["location__JOIN__{$this->settings['database']}__locations__reserved"]);
 		
 		# Return the data
 		return $data;
@@ -519,8 +519,8 @@ class labsInventory extends frontControllerApplication
 			equipmentType.urlSlug,
 			COUNT(equipment.id) AS total
 		FROM equipment
-		LEFT JOIN equipmentType ON type__JOIN__labs__equipmentType__reserved = equipmentType.id
-		LEFT JOIN locations ON location__JOIN__labs__locations__reserved = locations.id
+		LEFT JOIN equipmentType ON type__JOIN__{$this->settings['database']}__equipmentType__reserved = equipmentType.id
+		LEFT JOIN locations ON location__JOIN__{$this->settings['database']}__locations__reserved = locations.id
 		WHERE
 			visibleOnline = 'Y'
 			AND equipmentType IS NOT NULL
