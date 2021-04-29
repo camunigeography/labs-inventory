@@ -136,7 +136,7 @@ class labsInventory extends frontControllerApplication
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Equipment groups';
 			
-			CREATE TABLE `equipmentType` (
+			CREATE TABLE `equipmentTypes` (
 			  `id` int NOT NULL AUTO_INCREMENT,
 			  `equipmentType` varchar(255) NOT NULL COMMENT 'Equipment type',
 			  `urlSlug` varchar(255) NOT NULL COMMENT 'URL slug',
@@ -485,11 +485,11 @@ class labsInventory extends frontControllerApplication
 		$query = "SELECT
 			equipment.*,
 			DATE_FORMAT(CAST(equipment.dateAcquired AS DATE), '%D %M, %Y') AS dateAcquired,
-			equipmentType.equipmentType,
-			equipmentType.urlSlug,
+			equipmentTypes.equipmentType,
+			equipmentTypes.urlSlug,
 			locations.location
 		FROM equipment
-		LEFT JOIN equipmentType ON equipmentTypeId = equipmentType.id
+		LEFT JOIN equipmentTypes ON equipmentTypeId = equipmentTypes.id
 		LEFT JOIN locations ON locationId = locations.id
 		WHERE
 			visibleOnline = 'Y'"
@@ -515,15 +515,15 @@ class labsInventory extends frontControllerApplication
 		# Get the data or end; this is a join of equipment and equipmentType to get the totals
 		$query = "SELECT
 			DISTINCT equipmentType,
-			equipmentType.urlSlug,
+			equipmentTypes.urlSlug,
 			COUNT(equipment.id) AS total
 		FROM equipment
-		LEFT JOIN equipmentType ON equipmentTypeId = equipmentType.id
+		LEFT JOIN equipmentTypes ON equipmentTypeId = equipmentTypes.id
 		LEFT JOIN locations ON locationId = locations.id
 		WHERE
-			visibleOnline = 'Y'
+			    visibleOnline = 'Y'
 			AND equipmentType IS NOT NULL
-		GROUP BY equipmentType, /* Needed for MySQL 5.7: */ equipmentType.urlSlug
+		GROUP BY equipmentType, /* Needed for MySQL 5.7: */ equipmentTypes.urlSlug
 		HAVING total > 0
 		ORDER BY equipmentType
 		;";
