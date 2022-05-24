@@ -102,7 +102,7 @@ class labsInventory extends frontControllerApplication
 			  `active` enum('Y','N') NOT NULL DEFAULT 'Y',
 			  `name` varchar(255) NOT NULL,
 			  `email` varchar(255) NOT NULL,
-			  `state` varchar(255) NOT NULL COMMENT 'Headings expanded',
+			  `state` VARCHAR(255) NULL DEFAULT NULL COMMENT 'Headings expanded',
 			  PRIMARY KEY (`crsid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Administrators';
 			
