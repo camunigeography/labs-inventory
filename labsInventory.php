@@ -153,7 +153,7 @@ class labsInventory extends frontControllerApplication
 			  `id` int NOT NULL COMMENT 'Automatic key (ignored)',
 			  `applicationName` varchar(255) NOT NULL DEFAULT 'Labs inventory' COMMENT 'Application name',
 			  `recipientEmail` varchar(255) NOT NULL COMMENT 'Recipient e-mail',
-			  `labManagerNames` varchar(255) NOT NULL COMMENT 'Lab manager names',
+			  `labManagerNames` varchar(255) NOT NULL COMMENT 'Lab manager names (added to e-mail signature)',
 			  `introductoryText` text NOT NULL COMMENT 'Introductory text'
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Settings';
 			
