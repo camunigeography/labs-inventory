@@ -154,7 +154,8 @@ class labsInventory extends frontControllerApplication
 			  `applicationName` varchar(255) NOT NULL DEFAULT 'Labs inventory' COMMENT 'Application name',
 			  `recipientEmail` varchar(255) NOT NULL COMMENT 'Recipient e-mail',
 			  `labManagerNames` varchar(255) NOT NULL COMMENT 'Lab manager names (added to e-mail signature)',
-			  `introductoryText` text NOT NULL COMMENT 'Introductory text'
+			  `introductoryText` text NOT NULL COMMENT 'Introductory text',
+			  `oldOrdersHideYears` INT NULL DEFAULT NULL COMMENT 'In orders listing, orders older than this many years'
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Settings';
 			
 			CREATE TABLE `shoppingcart` (
@@ -238,17 +239,18 @@ class labsInventory extends frontControllerApplication
 		
 		# Load the shopping cart library with the specified settings
 		$shoppingCartSettings = array (
-			'name'				=> $this->settings['applicationName'],
-			'provider'			=> __CLASS__,
-			'database'			=> $this->settings['database'],		// Shop database
-			'administrators'	=> $this->administrators,
-			'disclaimerText'	=> $this->disclaimerText . ' You must type YES to accept.',
-			'pricePrefix'		=> 'Replacement value:',
-			'sundries'			=> $sundries,
-			'statusLabels'		=> $this->statusLabels,
-			'dateLimitations'	=> true,
-			'requireUser'		=> true,
-			'confirmationEmail'	=> false,		// Handled internally in the present class instead by checkout() then confirmationEmail()
+			'name'					=> $this->settings['applicationName'],
+			'provider'				=> __CLASS__,
+			'database'				=> $this->settings['database'],		// Shop database
+			'administrators'		=> $this->administrators,
+			'disclaimerText'		=> $this->disclaimerText . ' You must type YES to accept.',
+			'pricePrefix'			=> 'Replacement value:',
+			'sundries'				=> $sundries,
+			'statusLabels'			=> $this->statusLabels,
+			'dateLimitations'		=> true,
+			'requireUser'			=> true,
+			'confirmationEmail'		=> false,		// Handled internally in the present class instead by checkout() then confirmationEmail()
+			'oldOrdersHideYears'	=> $this->settings['oldOrdersHideYears'],
 		);
 		require_once ('shoppingCart.php');
 		$this->shoppingCart = new shoppingCart ($this->databaseConnection, $this->baseUrl, $shoppingCartSettings, $this->userData, $this->userIsAdministrator, $this->user);
@@ -766,7 +768,7 @@ class labsInventory extends frontControllerApplication
 		$confirmationMode = (isSet ($_GET['mode']) && ($_GET['mode'] == 'confirmation'));
 		
 		# Delegate to the shopping cart system
-		list ($result, $html, $isUpdatedFinalised) = $this->shoppingCart->orders ($id, $confirmationMode, $localCollectionModeEnabled = true, $messageLink = true, $listingFields = array ('id', 'name', 'startDate', 'endDate', 'status', ));
+		list ($result, $html, $isUpdatedFinalised) = $this->shoppingCart->orders ($id, $confirmationMode, $localCollectionModeEnabled = true, $messageLink = true, $listingFields = array ('id', 'name', 'startDate', 'endDate', 'status', ), $this->settings['oldOrdersHideYears']);
 		
 		# End if no result
 		if (!$result) {
