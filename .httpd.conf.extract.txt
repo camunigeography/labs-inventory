@@ -3,15 +3,10 @@
 # Load using:
 #	# Labs inventory system
 #	Include /path/to/labs-inventory/.httpd.conf.extract.txt
-#	Use MacroLabsInventory /path/to/labs-inventory "/path/to/site/:/path/to/labs-inventory/:/path/to/php/libraries/"
+#	Use MacroLabsInventory /path/to/labs-inventory
 
 
-<Macro MacroLabsInventory $baseUrl $includePath>
-	
-	# Include path
-	<Location $baseUrl>
-		php_value include_path "$includePath"
-	</Location>
+<Macro MacroLabsInventory $baseUrl>
 	
 	# Front controller application support
 	Use MacroFrontControllerApplication "$baseUrl/" "Equipment inventory"

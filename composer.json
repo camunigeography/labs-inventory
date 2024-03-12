@@ -1,0 +1,16 @@
+{
+    "name": "camunigeography/labs-inventory",
+    "description": "Labs inventory system",
+    "type": "project",
+    "license": "GPL-3.0-only",
+    "minimum-stability": "stable",
+    "require": {
+        "libpurecontent/frontcontrollerapplication": "^1.13",
+        "libpurecontent/application": "^1.9",
+        "libpurecontent/image": "^1.4",
+        "libpurecontent/ultimateform": "^1.29"
+    },
+    "autoload": {
+        "files": ["labsInventory.php"]
+    }
+}

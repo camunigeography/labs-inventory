@@ -1,7 +1,6 @@
 <?php
 
 # Class to create a labs inventory system
-require_once ('frontControllerApplication.php');
 class labsInventory extends frontControllerApplication
 {
 	# Function to assign defaults additional to the general application defaults
@@ -318,7 +317,6 @@ class labsInventory extends frontControllerApplication
 			
 			# Redirect if there is already a type set from the cookie
 			if (isSet ($_SESSION['type']) && isSet ($this->equipmentTypes[$_SESSION['type']])) {
-				require_once ('application.php');
 				$location = $_SERVER['_SITE_URL'] . $this->baseUrl . '/equipment/' . $_SESSION['type'] . '.html';
 				unset ($_SESSION['type']);
 				application::sendHeader (302, $location);
@@ -462,7 +460,6 @@ class labsInventory extends frontControllerApplication
 			
 			# Create the thumbnail if required
 			if ($createThumbnail) {
-				require_once ('image.php');
 				if (!image::resize ($imageFile, $outputFormat = 'jpg', $newWidth = $asThumbnail, $newHeight = '', $thumbnailFile)) {
 					return $failureHtml;
 				}
@@ -919,7 +916,6 @@ Signature of staff ({$this->settings['labManagerNames']})
 		$extraHeaders .= "\r\nReply-To: {$replyTo}";
 		
 		# Send the message
-		require_once ('application.php');
 		application::utf8Mail ($to, $subject, $message, $extraHeaders);
 		
 		# Confirm sending
@@ -962,7 +958,6 @@ Signature of staff ({$this->settings['labManagerNames']})
 		}
 		
 		# Create a new form
-		require_once ('ultimateForm.php');
 		$form = new form (array (
 			'developmentEnvironment' => ini_get ('display_errors'),
 			'displayRestrictions' => false,

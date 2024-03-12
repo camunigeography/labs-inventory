@@ -17,7 +17,7 @@ function getUser ($userId)
 }
 
 # Load and run the application with the above settings
-require_once ('labsInventory.php');
+require_once ('vendor/autoload.php');
 new labsInventory ($settings);
 
 ?>
