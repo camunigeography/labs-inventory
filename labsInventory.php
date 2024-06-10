@@ -906,7 +906,7 @@ Signature of staff ({$this->settings['labManagerNames']})
 		# Prepare message parameters
 		$to = ($outcomeMode ? "{$result['name']} <{$result['email']}>" : $this->settings['recipientEmail']);
 		$replyTo = ($outcomeMode ? $this->settings['recipientEmail'] : "{$result['name']} <{$result['email']}>");
-		$subject = strip_tags ($this->settings['h1']) . ": {$subject} ({$result['name']})";
+		$subject = strip_tags ($this->settings['applicationName']) . ": {$subject} ({$result['name']})";
 		$message = wordwrap ($message);
 		$from = "Webmaster <{$this->settings['webmaster']}>";
 		$extraHeaders  = "From: {$from}";
