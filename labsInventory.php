@@ -103,7 +103,7 @@ class labsInventory extends frontControllerApplication
 			  `email` varchar(255) NOT NULL,
 			  `state` VARCHAR(255) NULL DEFAULT NULL COMMENT 'Headings expanded',
 			  PRIMARY KEY (`crsid`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Administrators';
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Administrators';
 			
 			CREATE TABLE `equipment` (
 			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Inventory no.',
@@ -127,26 +127,26 @@ class labsInventory extends frontControllerApplication
 			  `visibleOnline` enum('Y','N','Unknown') NOT NULL DEFAULT 'Y' COMMENT 'Visible online?',
 			  `loanable` enum('No','Yes','Yes - staff/graduates only','Yes - staff only','Unknown') NOT NULL DEFAULT 'No' COMMENT 'Loanable?',
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Equipment';
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Equipment';
 			
 			CREATE TABLE `equipmentGroups` (
 			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique key',
 			  `group` varchar(255) NOT NULL COMMENT 'Group',
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Equipment groups';
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Equipment groups';
 			
 			CREATE TABLE `equipmentTypes` (
 			  `id` int NOT NULL AUTO_INCREMENT,
 			  `equipmentType` varchar(255) NOT NULL COMMENT 'Equipment type',
 			  `urlSlug` varchar(255) NOT NULL COMMENT 'URL slug',
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Equipment type';
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Equipment type';
 			
 			CREATE TABLE `locations` (
 			  `id` int NOT NULL AUTO_INCREMENT,
 			  `location` varchar(255) NOT NULL,
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Locations';
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Locations';
 			
 			CREATE TABLE `settings` (
 			  `id` int NOT NULL COMMENT 'Automatic key (ignored)',
@@ -155,7 +155,7 @@ class labsInventory extends frontControllerApplication
 			  `labManagerNames` varchar(255) NOT NULL COMMENT 'Lab manager names (added to e-mail signature)',
 			  `introductoryText` text NOT NULL COMMENT 'Introductory text',
 			  `oldOrdersHideYears` INT NULL DEFAULT NULL COMMENT 'In orders listing, orders older than this many years'
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Settings';
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Settings';
 			
 			CREATE TABLE `shoppingcart` (
 			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique key',
@@ -172,7 +172,7 @@ class labsInventory extends frontControllerApplication
 			  `maximumAvailable` int NOT NULL COMMENT 'Maxmimum number of items of this type available',
 			  `orderId` int DEFAULT NULL COMMENT 'Order number',
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Shopping cart session information (do not edit)';
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Shopping cart session information (do not edit)';
 			
 			CREATE TABLE `shoppingcartOrders` (
 			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Order no.',
@@ -190,13 +190,13 @@ class labsInventory extends frontControllerApplication
 			  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			  `status` enum('unfinalised','finalised','shipped','returned','lost','ignore') NOT NULL COMMENT 'Status of order',
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Shopping cart orders';
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Shopping cart orders';
 			
 			CREATE TABLE `sundries` (
 			  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Automatic key',
 			  `name` varchar(255) NOT NULL COMMENT 'Name of sundry item',
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Sundries';
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Sundries';
 		";
 	}
 	
