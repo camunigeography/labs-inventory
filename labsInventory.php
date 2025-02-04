@@ -226,6 +226,9 @@ class labsInventory extends frontControllerApplication
 		# Set the image directory
 		$this->settings['imageDirectory'] = $this->baseUrl . $this->settings['imageDirectory'];
 		
+		# Add the recipient e-mail to the feedback recipient for the feedback form
+		$this->settings['feedbackRecipient'] = array ($this->settings['recipientEmail'], $this->settings['feedbackRecipient']);
+		
 		# Get the equipment types
 		$this->equipmentTypes = $this->getEquipmentTypes ();
 		
