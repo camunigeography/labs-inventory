@@ -83,10 +83,6 @@ class labsInventory extends frontControllerApplication
 			),
 		);
 		
-		# Get the user data from the callback
-		// Only these fields are used: 'username', 'name', 'telephone', 'email', 'staffTypeId', 'isStaff', 'isGraduate', 'staffType'
-		$this->userData = $this->getUser ($this->user);
-		
 		# Return the actions
 		return $actions;
 	}
@@ -228,6 +224,10 @@ class labsInventory extends frontControllerApplication
 		
 		# Add the recipient e-mail to the feedback recipient for the feedback form
 		$this->settings['feedbackRecipient'] = array ($this->settings['recipientEmail'], $this->settings['feedbackRecipient']);
+		
+		# Get the user data from the callback
+		// Only these fields are used: 'username', 'name', 'telephone', 'email', 'staffTypeId', 'isStaff', 'isGraduate', 'staffType'
+		$this->userData = $this->getUser ($this->user);
 		
 		# Get the equipment types
 		$this->equipmentTypes = $this->getEquipmentTypes ();
