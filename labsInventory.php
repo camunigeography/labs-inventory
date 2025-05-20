@@ -84,7 +84,7 @@ class labsInventory extends frontControllerApplication
 		);
 		
 		# Get the user data from the callback
-		// Only these fields are used: 'username', 'name', 'telephone', 'email', 'staffType__JOIN__people__staffType__reserved', isStaff, isGraduate, staffType
+		// Only these fields are used: 'username', 'name', 'telephone', 'email', 'staffTypeId', 'isStaff', 'isGraduate', 'staffType'
 		$this->userData = $this->getUser ($this->user);
 		
 		# Return the actions
@@ -260,11 +260,11 @@ class labsInventory extends frontControllerApplication
 	
 	
 	# Function to get the user
-	private function getUser ($userId)
+	private function getUser ($username)
 	{
 		# Get the data from the callback and return it
 		$callbackFunction = $this->settings['userCallback'];
-		$data = $callbackFunction ($userId);
+		$data = $callbackFunction ($username);
 		return $data;
 	}
 	

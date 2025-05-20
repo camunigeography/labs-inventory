@@ -9,9 +9,10 @@ $settings = array (
 );
 
 # Function to get details of a user
-function getUser ($userId)
+function getUser ($username)
 {
 	# Look up the user's status
+	// Should return these fields: 'username', 'name', 'telephone', 'email', 'staffTypeId', 'isStaff', 'isGraduate', 'staffType'
 	// ...
 	return $userData;
 }
