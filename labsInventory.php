@@ -181,7 +181,7 @@ class labsInventory extends frontControllerApplication
 			  `name` varchar(255) NOT NULL COMMENT 'Name',
 			  `email` varchar(255) NOT NULL COMMENT 'E-mail address',
 			  `telephone` varchar(255) DEFAULT NULL COMMENT 'Telephone',
-			  `staffTypeId` int NOT NULL COMMENT 'Status',
+			  `personTypeMoniker` VARCHAR(50) NOT NULL COMMENT 'Person type'
 			  `confirmation` varchar(3) NOT NULL,
 			  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			  `status` enum('unfinalised','finalised','shipped','returned','lost','ignore') NOT NULL COMMENT 'Status of order',
@@ -226,7 +226,7 @@ class labsInventory extends frontControllerApplication
 		$this->settings['feedbackRecipient'] = array ($this->settings['recipientEmail'], $this->settings['feedbackRecipient']);
 		
 		# Get the user data from the callback
-		// Only these fields are used: 'username', 'name', 'telephone', 'email', 'staffTypeId', 'isStaff', 'isPostgraduate', 'staffType'
+		// Only these fields are used: 'username', 'name', 'telephone', 'email', 'personTypeMoniker', 'personType', 'isStaff', 'isPostgraduate'
 		$this->userData = $this->getUser ($this->user);
 		
 		# Get the equipment types
@@ -851,13 +851,13 @@ class labsInventory extends frontControllerApplication
 			$result['collectionDetails'] = "\n\nCollection details: \n" . $result['collectionDetails'];
 			$result['sundries']= "\n\nSundries:           \n" . ($result['sundries'] ? $result['sundries'] : '[None requested]');
 			$userData = $this->getUser ($result['username']);
-			$result['status'] = $userData['staffType'];
+			$result['personType'] = $userData['personType'];
 			$subject = 'loan request: approved' . ($isUpdatedFinalised ? ' [UPDATE]' : '');
 		} else {
 			$openingMessage = "A request has been submitted as follows.\n\nYou now need to review/approve it at:\n{$_SERVER['_SITE_URL']}{$this->baseUrl}/orders/{$result['id']}/";
 			$result['comments'] = '';
 			$result['collectionDetails'] = '';
-			$result['status'] = $this->userData['staffType'];
+			$result['personType'] = $this->userData['personType'];
 			$subject = 'loan request';
 		}
 		
@@ -870,7 +870,7 @@ class labsInventory extends frontControllerApplication
 Name:         {$result['name']}
 E-mail:       {$result['email']}
 Telephone:    {$result['telephone']}
-Status:       {$result['status']}
+Status:       {$result['personType']}
 
 Date(s):      {$dates}
 
