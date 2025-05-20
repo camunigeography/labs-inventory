@@ -262,6 +262,9 @@ class labsInventory extends frontControllerApplication
 	# Function to get the user
 	private function getUser ($username)
 	{
+		# If no user, end immediately to avoid unnecessary callback
+		if (!$username) {return false;}
+		
 		# Get the data from the callback and return it
 		$callbackFunction = $this->settings['userCallback'];
 		$data = $callbackFunction ($username);
