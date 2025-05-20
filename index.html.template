@@ -12,7 +12,7 @@ $settings = array (
 function getUser ($username)
 {
 	# Look up the user's status
-	// Should return these fields: 'username', 'name', 'telephone', 'email', 'staffTypeId', 'isStaff', 'isGraduate', 'staffType'
+	// Should return these fields: 'username', 'name', 'telephone', 'email', 'staffTypeId', 'isStaff', 'isPostgraduate', 'staffType'
 	// ...
 	return $userData;
 }

@@ -226,7 +226,7 @@ class labsInventory extends frontControllerApplication
 		$this->settings['feedbackRecipient'] = array ($this->settings['recipientEmail'], $this->settings['feedbackRecipient']);
 		
 		# Get the user data from the callback
-		// Only these fields are used: 'username', 'name', 'telephone', 'email', 'staffTypeId', 'isStaff', 'isGraduate', 'staffType'
+		// Only these fields are used: 'username', 'name', 'telephone', 'email', 'staffTypeId', 'isStaff', 'isPostgraduate', 'staffType'
 		$this->userData = $this->getUser ($this->user);
 		
 		# Get the equipment types
@@ -663,7 +663,7 @@ class labsInventory extends frontControllerApplication
 				return ($userData['isStaff']);
 				
 			case 'Yes - staff/graduates only':
-				return ($userData['isStaff'] || $userData['isGraduate']);
+				return ($userData['isStaff'] || $userData['isPostgraduate']);
 				
 			case 'Yes':
 				return ($this->user);	// Anyone logged in - i.e. people in the Department of any status, and others with a CRSID
