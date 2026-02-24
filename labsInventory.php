@@ -858,7 +858,7 @@ class labsInventory extends frontControllerApplication
 		if ($outcomeMode) {
 			$openingMessage  = '';
 			if ($isUpdatedFinalised) {$openingMessage .= "[This is an UPDATED RESPONSE. Please check below for any new details.]\n\n\n";}
-			$openingMessage .= "Your loan request has been approved as below. Please take particular note of the following comments and collection details.\n\nPlease print out this e-mail and bring it at the time of collection. The loan cannot be completed without a paper copy of these details.";
+			$openingMessage .= "Your loan request has been approved as below. Please take particular note of the following comments and collection details.";
 			$result['comments'] = "\n\nComments from Laboratory staff:\n" . ($result['comments'] ? $result['comments'] : '[No comments added]');
 			$result['collectionDetails'] = "\n\nCollection details: \n" . $result['collectionDetails'];
 			$result['sundries']= "\n\nSundries:           \n" . ($result['sundries'] ? $result['sundries'] : '[None requested]');
