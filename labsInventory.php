@@ -486,6 +486,15 @@ class labsInventory extends frontControllerApplication
 	# Central function to get a list/item of equipment
 	private function getArticlesData ($equipmentTypeUrlSlug = false, $equipmentId = false, $restrictionSql = false)
 	{
+		# Set prepared statement parameters
+		$preparedStatementValues = array ();
+		if ($equipmentTypeUrlSlug) {
+			$preparedStatementValues['equipmentTypeUrlSlug'] = $equipmentTypeUrlSlug;
+		}
+		if ($equipmentId) {
+			$preparedStatementValues['equipmentId'] = $equipmentId;
+		}
+		
 		# Get the data or end
 		$query = "SELECT
 			equipment.*,
@@ -498,12 +507,15 @@ class labsInventory extends frontControllerApplication
 		LEFT JOIN locations ON locationId = locations.id
 		WHERE
 			visibleOnline = 'Y'"
-			. ($equipmentTypeUrlSlug ? " AND urlSlug = " . $this->databaseConnection->quote ($equipmentTypeUrlSlug) : '')
-			. ($equipmentId ? " AND equipment.id = " . $this->databaseConnection->quote ($equipmentId) : '')
+			. ($equipmentTypeUrlSlug ? ' AND urlSlug = :equipmentTypeUrlSlug' : '')
+			. ($equipmentId ? ' AND equipment.id = :equipmentId' : '')
 			. $restrictionSql
-		 . "ORDER BY name,manufacturer,id;";
+		 . '
+		ORDER BY name, manufacturer, id;';
 		$function = ($equipmentId ? 'getOne' : 'getData');
-		if (!$data = $this->databaseConnection->$function ($query, "{$this->settings['database']}.equipment")) {return false;}
+		if (!$data = $this->databaseConnection->$function ($query, "{$this->settings['database']}.equipment", true, $preparedStatementValues)) {
+			return false;
+		}
 		
 		# Remove specific fields
 		unset ($data['equipmentTypeId']);
