@@ -722,8 +722,8 @@ class labsInventory extends frontControllerApplication
 		));
 		if (!$result = $form->process ()) {return false;}
 		
-		# Define the search sub-SQL
-		$searchSql = ($result['wildcard']['wildcard'] ? $result['search'] : '\\b' . $result['search'] . '\\b');
+		# Define the search sub-SQL; NB use of preg_quote is not for security but to ensure characters like . are treated as strings not regexp context
+		$searchSql = ($result['wildcard']['wildcard'] ? $result['search'] : '\\b' . preg_quote ($result['search']) . '\\b');
 		
 		# Define the restriction, surrounding the search term with a word-boundary limitation
 		$restrictionSql = "
