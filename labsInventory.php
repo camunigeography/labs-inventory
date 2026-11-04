@@ -484,10 +484,13 @@ class labsInventory extends frontControllerApplication
 	
 	
 	# Central function to get a list/item of equipment
-	private function getArticlesData ($equipmentTypeUrlSlug = false, $equipmentId = false, $restrictionSql = false)
+	private function getArticlesData ($equipmentTypeUrlSlug = false, $equipmentId = false, $restrictionSql = false, $restrictionPreparedStatementValues = array ())
 	{
 		# Set prepared statement parameters
 		$preparedStatementValues = array ();
+		if ($restrictionPreparedStatementValues) {
+			$preparedStatementValues = $restrictionPreparedStatementValues;
+		}
 		if ($equipmentTypeUrlSlug) {
 			$preparedStatementValues['equipmentTypeUrlSlug'] = $equipmentTypeUrlSlug;
 		}
@@ -495,7 +498,7 @@ class labsInventory extends frontControllerApplication
 			$preparedStatementValues['equipmentId'] = $equipmentId;
 		}
 		
-		# Get the data or end
+		# Assemble the query
 		$query = "SELECT
 			equipment.*,
 			DATE_FORMAT(CAST(equipment.dateAcquired AS DATE), '%D %M, %Y') AS dateAcquired,
@@ -512,6 +515,8 @@ class labsInventory extends frontControllerApplication
 			. $restrictionSql
 		 . '
 		ORDER BY name, manufacturer, id;';
+		
+		# Get the data or end
 		$function = ($equipmentId ? 'getOne' : 'getData');
 		if (!$data = $this->databaseConnection->$function ($query, "{$this->settings['database']}.equipment", true, $preparedStatementValues)) {
 			return false;
@@ -701,7 +706,6 @@ class labsInventory extends frontControllerApplication
 			'submitButtonText' => 'Search!',
 			'formCompleteText' => false,
 			'reappear' => true,
-			'escapeOutput' => true,
 			'submitTo' => "{$this->baseUrl}/search/",
 		));
 		$form->input (array (
@@ -724,16 +728,20 @@ class labsInventory extends frontControllerApplication
 		# Define the restriction, surrounding the search term with a word-boundary limitation
 		$restrictionSql = "
 			AND (
-				   name REGEXP '{$searchSql}'
-				OR model REGEXP '{$searchSql}'
-				OR manufacturer = '{$searchSql}'
-				OR serialNumber = '{$result['search']}'
-				OR notesPublic REGEXP '{$searchSql}'
+				   name REGEXP :searchMatch
+				OR model REGEXP :searchMatch
+				OR manufacturer = :searchMatch
+				OR serialNumber = :searchExact
+				OR notesPublic REGEXP :searchMatch
 			)
 		";
+		$restrictionPreparedStatementValues = array (
+			'searchMatch' => $searchSql,
+			'searchExact' => $result['search'],
+		);
 		
 		# Get the data or end
-		if (!$data = $this->getArticlesData (false, false, $restrictionSql)) {
+		if (!$data = $this->getArticlesData (false, false, $restrictionSql, $restrictionPreparedStatementValues)) {
 			echo $html = '<p>No items were found.</p>';
 			return false;
 		}
