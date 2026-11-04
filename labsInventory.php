@@ -550,7 +550,7 @@ class labsInventory extends frontControllerApplication
 		ORDER BY equipmentType
 		;";
 		if (!$data = $this->databaseConnection->getData ($query)) {
-			application::dumpData ($this->databaseConnection->error ());
+			//application::dumpData ($this->databaseConnection->error ());
 			return false;
 		}
 		
